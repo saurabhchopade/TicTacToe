@@ -214,6 +214,14 @@ declare -a symbolStorage;
 
 		if [ $pair1 -eq  $whoIs ] || [ $pair2 -eq  $whoIs ] || [ $pair3 -eq  $whoIs ] || [ $pair4 -eq  $whoIs ] || [ $pair5 -eq  $whoIs ] || [ $pair6 -eq  $whoIs ] || [ $pair7 -eq  $whoIs ] || [ $pair8 -eq  $whoIs ] 
 		then
+			if [ $switchFlag -eq 1 ]
+			then
+			printf "\n \n";
+			echo "-----------YOU WON------------";
+			else
+			echo "---------COMPUTER WON---------";
+			fi;
+			printf "\n \n ";
 			echo "-----------------------------";
 			echo "| WINNER WINNER CHIKEN DINNER |";
 			echo "------------------------------";
@@ -462,10 +470,21 @@ declare -a symbolStorage;
 	if [ $switchFlag -eq 1 ]
 	then
 		printf "\n ";
+		echo "    *********";
 		echo "     YOUR TURN";
-		echo "      Symbol=" $playerSymbol;
+		echo "     SYMBOL=" $playerSymbol;
 
 		printf "\n \n";
+
+		#SUGGESTION TO USER
+		#If Computer is winning then it will give  suggetstion
+		tripletWin=$(iCanWin $winAttack);
+      if [ $tripletWin > 0 ]
+      then
+      printf "\n ";
+      echo "SUGGESTION="$tripletWin;
+      fi;
+
 		#Cell Choice From User
 		read -p  "Enter VALID CELL=" cell;
 
@@ -479,8 +498,9 @@ declare -a symbolStorage;
 		printf "\n \n ";
 	else
 		printf "\n ";
+		echo "    **************";
 		echo "     COMPUTER TURN";
-		echo "      Symbol=" $computerSymbol;
+		echo "      SYMBOL=" $computerSymbol;
 		#computer Playing Give Cell Value
 		#ICANWIN give Output only when winning condition
 
