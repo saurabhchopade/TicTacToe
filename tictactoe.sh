@@ -21,6 +21,9 @@ GAMEINIT=1;
 COMPUTERPAIR=3;
 PLAYERPAIR=300;
 
+#We are calling ICANWIN function for winning move and the Blocking move
+winAttack=1
+blockAttack=2;
 #VARIABLES
 
 tossResult=" ";
@@ -226,8 +229,10 @@ declare -a symbolStorage;
          done
 	}
 	
+#This Function Will Give winning and blocking positions
+
 	function iCanWin(){
-		winsCondition=2;
+
 		pair1=$(( ${gameStorage[1]} + ${gameStorage[2]} +  ${gameStorage[3]}  ));
 		pair2=$(( ${gameStorage[1]} + ${gameStorage[4]} +  ${gameStorage[7]}  ));
 		pair3=$(( ${gameStorage[1]} + ${gameStorage[5]} +  ${gameStorage[9]}  ));
@@ -236,10 +241,22 @@ declare -a symbolStorage;
 		pair6=$(( ${gameStorage[3]} + ${gameStorage[5]} +  ${gameStorage[7]}  ));
 		pair7=$(( ${gameStorage[3]} + ${gameStorage[6]} +  ${gameStorage[9]}  ));
 		pair8=$(( ${gameStorage[7]} + ${gameStorage[8]} +  ${gameStorage[9]}  ));
-
- 
+		
+		attack=$1;
+		if [ $winAttack -eq $attack ]
+		then
+			#win Attack Check condition for winning Block 
+			winsCondition=2;
 			add=1;
 			checker=1;
+		else
+			#But THis Win condition we are using for block also
+			#This is Block condition
+			winsCondition=200;
+         add=1;
+         checker=1;
+		fi;
+
 			if [ $pair1 -eq $winsCondition ]
 			then
 				if [ $((${gameStorage[1]} + $add )) -eq $checker ]
@@ -427,7 +444,8 @@ declare -a symbolStorage;
 		echo "     COMPUTER TURN";
 		echo "      Symbol=" $computerSymbol;
 		#computer Playing Give Cell Value
-		celem=$(iCanWin);
+
+		celem=$(iCanWin $winAttack);
 		echo "========="$celem;
 		cell1=$(computerPlaying);
 		insertInStorage $cell1 $COMPUTERVALUE;
