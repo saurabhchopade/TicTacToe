@@ -32,12 +32,15 @@ playerSymbol=" ";
 #To Switch The players
 switchFlag=1;
 
+#To store return value For Win block condition 
+tripletWin=0;
+tripletBlock=0;
 #ARRAY
 #gameStorage To Actual Values
 #symbolStorage for To store symbols  By mapping Two players Values
 declare -a gameStorage;
 declare -a symbolStorage;
-
+#=================================================BOARD DESIGN============================================
 #Board function display the Design with respective Symbols
 	function board() {
 		#Locic For Board Design 
@@ -84,7 +87,7 @@ declare -a symbolStorage;
 		echo -ne " ";
 
 	}
-
+#=================================THIS RUNS ONLY ONCE WHILE INITIALIZATION=================================
 #Toss for Who Play First
 #This Logic Run Only Starting of The GAME
 	function assignSymbol(){
@@ -160,7 +163,7 @@ declare -a symbolStorage;
 	}
 
 
-#THIS FUNCTION FOR INSERTING VALUE AND THE SYMBOL TO ARRAY 
+#===================THIS FUNCTION FOR INSERTING VALUE AND THE SYMBOL TO ARRAY=========================== 
 #VALUE ARRAY(GAMESTORAGE) WE USING FOR THE WINNING CONDITION AND FOR BLOCKING THE PLAYER USING THE VALUES
 #SYMBOL STORAGE USING FOR AS PER USER CELL VALUE
  
@@ -169,6 +172,7 @@ declare -a symbolStorage;
 	cellv=$1;
 	value=$2;
 	#echo $cellv $value;
+	
 	gameStorage[(( cellv ))]="$value";
 
 	#Storing Symbol As per The Value
@@ -185,7 +189,7 @@ declare -a symbolStorage;
 
 	}
 
-#HERE WE ARE CHECKING WINNING CONDITION
+#====================================HERE WE ARE CHECK WINNER===========================================
 	function checkWin() {
 		whichPlayer=$1
 		if [ $PLAYERPLAY -eq $whichPlayer ]
@@ -217,9 +221,10 @@ declare -a symbolStorage;
 		fi;
 	}
 
-
-
+#==================================================================================================
+#This Function for Corner conditions if the winning move blocking move not possible
 	function computerPlaying(){
+			#These Are 4 corner conditions
 			if [ ${gameStorage[1]} -eq 0 ]
 			then
 				state=1;
@@ -236,10 +241,12 @@ declare -a symbolStorage;
          then
             state=9;
             echo $state;
+			#This is middle condition
 			elif [ ${gameStorage[5]} -eq 0 ]
          then
             state=5;
             echo $state;
+			#These Are side corner conditions
 			elif [ ${gameStorage[2]} -eq 0 ]
          then
             state=2;
@@ -258,9 +265,11 @@ declare -a symbolStorage;
             echo $state;
 			fi;
 	}
-	
-#This Function Will Give winning and blocking positions
 
+#==========================Winninng And Blocking is done by This Function============================
+
+#This Function Will Give winning and blocking positions to user by passing different arguments
+#like BlockAttack and Win Attack
 	function iCanWin(){
 
 		pair1=$(( ${gameStorage[1]} + ${gameStorage[2]} +  ${gameStorage[3]}  ));
@@ -432,12 +441,11 @@ declare -a symbolStorage;
 					no=9;
                echo $no;
             fi;
-			fi
-
+			fi;
 	}
 
 
-#THIS IS MAIN
+#=======================================THIS IS MAIN===========================================================
 #Player Switching Done Here
 #This Is main
 	while :
@@ -474,17 +482,40 @@ declare -a symbolStorage;
 		echo "     COMPUTER TURN";
 		echo "      Symbol=" $computerSymbol;
 		#computer Playing Give Cell Value
+		#ICANWIN give Output only when winning condition
 
-		celem=$(iCanWin $winAttack);
-		echo "========="$celem;
-		cell1=$(computerPlaying);
+		tripletWin=$(iCanWin $winAttack);
+		#If this condition Execute means 100% Winner
+		if [ $tripletWin > 0 ]
+		then
+		cell1=$tripletWin;
 		insertInStorage $cell1 $COMPUTERVALUE;
 		board;
 		checkWin $COMPUTERPLAY;
-		switchFlag=1;
+		printf "\n ";
+		echo "COMPUTER WON";
+		fi;
 		
+		#IF We Cannot Win Then We Are Blocking Opponents By this Condition
+		#blocking condition we not win so we switching 
+		tripletBlock=$(iCanWin $blockAttack);
+		if [ $tripletBlock > 0 ]
+		then
+			cell1=$tripletBlock;
+			insertInStorage $cell1 $COMPUTERVALUE;
+      	board;
+			switchFlag=1;
+		else
+			#If Winning And Blocking not possible then we Play Randomly And by giving priorities
+      	cell1=$(computerPlaying);
+      	insertInStorage $cell1 $COMPUTERVALUE;
+      	board;
+      	checkWin $COMPUTERPLAY;
+      	switchFlag=1;
+			fi;
 	fi;
 
 	done;
 unset gameStorage;
 unset symbolStorage;
+==============================================THE END===========================================================
