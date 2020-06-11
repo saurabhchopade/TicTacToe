@@ -210,7 +210,9 @@ declare -a symbolStorage;
 
 		if [ $pair1 -eq  $whoIs ] || [ $pair2 -eq  $whoIs ] || [ $pair3 -eq  $whoIs ] || [ $pair4 -eq  $whoIs ] || [ $pair5 -eq  $whoIs ] || [ $pair6 -eq  $whoIs ] || [ $pair7 -eq  $whoIs ] || [ $pair8 -eq  $whoIs ] 
 		then
-			echo "WINNER WINNER CHIKEN DINNER";
+			echo "-----------------------------";
+			echo "| WINNER WINNER CHIKEN DINNER |";
+			echo "------------------------------";
 			exit 1;
 		fi;
 	}
@@ -218,15 +220,43 @@ declare -a symbolStorage;
 
 
 	function computerPlaying(){
-			 for (( i=1;i<10;i++))
-         do
-            l=${gameStorage[$i]};
-            if [ $l -eq 0 ]
-            then
-               echo $i;
-               break;
-            fi;
-         done
+			if [ ${gameStorage[1]} -eq 0 ]
+			then
+				state=1;
+				echo $state;
+			elif [ ${gameStorage[3]} -eq 0 ]
+         then
+            state=3;
+            echo $state;
+			elif [ ${gameStorage[7]} -eq 0 ]
+         then
+            state=7;
+            echo $state;
+			elif [ ${gameStorage[9]} -eq 0 ]
+         then
+            state=9;
+            echo $state;
+			elif [ ${gameStorage[5]} -eq 0 ]
+         then
+            state=5;
+            echo $state;
+			elif [ ${gameStorage[2]} -eq 0 ]
+         then
+            state=2;
+            echo $state;
+			elif [ ${gameStorage[8]} -eq 0 ]
+         then
+            state=8;
+            echo $state;
+			elif [ ${gameStorage[4]} -eq 0 ]
+         then
+            state=4;
+            echo $state;
+			elif [ ${gameStorage[6]} -eq 0 ]
+         then
+            state=6;
+            echo $state;
+			fi;
 	}
 	
 #This Function Will Give winning and blocking positions
