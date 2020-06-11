@@ -14,6 +14,7 @@ SYMBOL2="X";
 #100 means player and 1 means Computer
 PLAYERVALUE=100;
 COMPUTERVALUE=1;
+#gameinit flag is to initialize the game like who play play first /which player which symbol
 GAMEINIT=1;
 
 #To check pair Addition// if addition equal to this Pair means Winning Condition 
@@ -84,11 +85,11 @@ declare -a symbolStorage;
 #Toss for Who Play First
 #This Logic Run Only Starting of The GAME
 	function assignSymbol(){
-
-		blank=0;
+		k=0;
+		blank=$k;
 		dummySymbol=" ";
 		#Array Initialized Because to set Boad Alignment Proper
-		for (( index=0;index<=10;index++))
+		for (( index=0;index<10;index++))
       do
          symbolStorage[(( index ))]="$dummySymbol";
 			gameStorage[(( index ))]="$blank";
@@ -177,7 +178,6 @@ declare -a symbolStorage;
 	then
 		#MEANS ITS COMPUTER TURN SO THAT WE STORING COMPUTER SYMBOL
 		symbolStorage[(( cellv ))]="$computerSymbol";
-		echo ${gameStorage[@]};
 	fi;
 
 	}
@@ -211,6 +211,22 @@ declare -a symbolStorage;
 			exit 1;
 		fi;
 	}
+
+
+
+	function computerPlaying(){
+
+			for (( i=1;i<10;i++))
+			do
+				l=${gameStorage[$i]};
+				if [ $l -eq 0 ]
+				then
+					echo $i;
+					break;
+				fi;
+			done
+	}
+
 
 #THIS IS MAIN
 #Player Switching Done Here
@@ -248,7 +264,13 @@ declare -a symbolStorage;
 		printf "\n ";
 		echo "     COMPUTER TURN";
 		echo "      Symbol=" $computerSymbol;
+		#computer Playing Give Cell Value
+#		read -p Enter Cell Value" c;
+		 cell1=$(computerPlaying);
+		
+		insertInStorage $cell1 $COMPUTERVALUE;
 		board;
+		checkWin $COMPUTERPLAY;
 		switchFlag=1;
 		
 	fi;
