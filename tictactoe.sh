@@ -1,6 +1,11 @@
 
 #!/bin/bash -x
 echo "Welcome to tic Tac Toe GAME";
+#CONSTANTS
+COMPUTERPLAY=0;
+PLAYERPLAY=1;
+#VARIABLES
+whoPlay=0;
 #Locic For Board Design 
 #Assumed for 1-2-3
 a="O";
@@ -43,3 +48,14 @@ echo -ne "|       ";echo -ne "|       ";echo -ne "|       ";echo -ne "|       ";
 echo "-------------------------";
 
 echo -ne " ";
+
+#Toss for Who Play First
+whoPlay=$((RANDOM%2));
+echo $whoPlay;
+
+	if [ $whoPlay -eq $COMPUTERPLAY ]
+	then
+		echo "Computer Play First";
+	else
+		echo "Player Play First";
+	fi;
