@@ -10,49 +10,52 @@ SYMBOL2="X";
 tossResult=0;
 computerSymbol="-";
 playerSymbol="-";
-#Locic For Board Design 
-#Assumed for 1-2-3
-a="O";
-b="O";
-c="O";
-#Assumed for 4-5-6
-d="X";
-e="X";
-f="X";
-#Assumed for 7-8-9
-h="X";
-i="X";
-j="X";
 
-echo "-------------------------";
+	function board() {
+		#Locic For Board Design 
+		#Assumed for 1-2-3
+		a="O";
+		b="O";
+		c="O";
+		#Assumed for 4-5-6
+		d="X";
+		e="X";
+		f="X";
+		#Assumed for 7-8-9
+		h="X";
+		i="X";
+		j="X";
 
-echo -ne "|       ";echo -ne "|       ";echo -ne "|       ";echo -ne "|       "; echo -e " ";
+		echo "-------------------------";
 
-echo -ne "|   $a   ";echo -ne "|   $b   ";echo -ne "|   $c   ";echo -ne "|       "; echo -e " ";
+		echo -ne "|       ";echo -ne "|       ";echo -ne "|       ";echo -ne "|       "; echo -e " ";
 
-echo -ne "|       ";echo -ne "|       ";echo -ne "|       ";echo -ne "|       "; echo -e " ";
+		echo -ne "|   $a   ";echo -ne "|   $b   ";echo -ne "|   $c   ";echo -ne "|       "; echo -e " ";
 
-echo "-------------------------";
+		echo -ne "|       ";echo -ne "|       ";echo -ne "|       ";echo -ne "|       "; echo -e " ";
 
-echo -ne "|       ";echo -ne "|       ";echo -ne "|       ";echo -ne "|       "; echo -e " ";
+		echo "-------------------------";
 
-echo -ne "|   $d   ";echo -ne "|   $e   ";echo -ne "|   $f   ";echo -ne "|       "; echo -e " ";
+		echo -ne "|       ";echo -ne "|       ";echo -ne "|       ";echo -ne "|       "; echo -e " ";
 
-echo -ne "|       ";echo -ne "|       ";echo -ne "|       ";echo -ne "|       "; echo -e " ";
+		echo -ne "|   $d   ";echo -ne "|   $e   ";echo -ne "|   $f   ";echo -ne "|       "; echo -e " ";
+
+		echo -ne "|       ";echo -ne "|       ";echo -ne "|       ";echo -ne "|       "; echo -e " ";
 
 
-echo "-------------------------";
+		echo "-------------------------";
 
-echo -ne "|       ";echo -ne "|       ";echo -ne "|       ";echo -ne "|       "; echo -e " ";
+		echo -ne "|       ";echo -ne "|       ";echo -ne "|       ";echo -ne "|       "; echo -e " ";
 
-echo -ne "|   $h   ";echo -ne "|   $i   ";echo -ne "|   $j   ";echo -ne "|       "; echo -e " ";
+		echo -ne "|   $h   ";echo -ne "|   $i   ";echo -ne "|   $j   ";echo -ne "|       "; echo -e " ";
 
-echo -ne "|       ";echo -ne "|       ";echo -ne "|       ";echo -ne "|       "; echo -e " ";
+		echo -ne "|       ";echo -ne "|       ";echo -ne "|       ";echo -ne "|       "; echo -e " ";
 
-echo "-------------------------";
+		echo "-------------------------";
 
-echo -ne " ";
+		echo -ne " ";
 
+	}
 #Toss for Who Play First
 tossResult=$((RANDOM%2));
 
@@ -93,4 +96,6 @@ tossResult=$((RANDOM%2));
 			echo "PLAYER SYMBOL IS="$playerSymbol;
       fi;
 
+		#Calling Board Function  To enter Valid cells
+		board;
 	fi;
