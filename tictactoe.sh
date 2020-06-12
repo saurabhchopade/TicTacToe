@@ -276,6 +276,21 @@ declare -a symbolStorage;
 		done
 	}
 
+#=========================Exception Handled of same cell==================================
+	function isVacant(){
+		checkVac=$1;
+		if [ ${gameStorage[checkVac]} -eq 0 ]
+		then
+			printf "\n";
+		else
+			printf "\n \n ";
+			echo "========================"
+			echo "PLEASE SELECT BLANK CELL";
+			board;
+			playerFunction;
+		fi;
+	}
+
 #============================Player Play From Here=======================================
 	function playerFunction(){
 		printf "\n ";
@@ -290,12 +305,13 @@ declare -a symbolStorage;
       if [ $tripletWin > 0 ]
       then
       	printf "\n ";
-         echo "SUGGESTION="$tripletWin;
+         echo "RECOMENDED CELL="$tripletWin;
      	fi;
 
       #Cell Choice From User
-      read -p  "Enter VALID CELL=" cell;
+      read -p  "CHOOSE CELL NO=" cell;
       #calling to insert into array
+		isVacant $cell;
       insertInStorage $cell $PLAYERVALUE;
       #Board Reflects here
       board;
