@@ -40,6 +40,7 @@ tripletBlock=0;
 #symbolStorage for To store symbols  By mapping Two players Values
 declare -a gameStorage;
 declare -a symbolStorage;
+
 #=================================================BOARD DESIGN============================================
 #Board function display the Design with respective Symbols
 	function board() {
@@ -278,178 +279,58 @@ declare -a symbolStorage;
 
 #This Function Will Give winning and blocking positions to user by passing different arguments
 #like BlockAttack and Win Attack
-	function iCanWin(){
 
-		pair1=$(( ${gameStorage[1]} + ${gameStorage[2]} +  ${gameStorage[3]}  ));
-		pair2=$(( ${gameStorage[1]} + ${gameStorage[4]} +  ${gameStorage[7]}  ));
-		pair3=$(( ${gameStorage[1]} + ${gameStorage[5]} +  ${gameStorage[9]}  ));
-		pair4=$(( ${gameStorage[2]} + ${gameStorage[5]} +  ${gameStorage[8]}  ));
-		pair5=$(( ${gameStorage[4]} + ${gameStorage[5]} +  ${gameStorage[6]}  ));
-		pair6=$(( ${gameStorage[3]} + ${gameStorage[5]} +  ${gameStorage[7]}  ));
-		pair7=$(( ${gameStorage[3]} + ${gameStorage[6]} +  ${gameStorage[9]}  ));
-		pair8=$(( ${gameStorage[7]} + ${gameStorage[8]} +  ${gameStorage[9]}  ));
-		
-		attack=$1;
-		if [ $winAttack -eq $attack ]
-		then
-			#win Attack Check condition for winning Block 
-			winsCondition=2;
-			add=1;
-			checker=1;
-		else
-			#But THis Win condition we are using for block also
-			#This is Block condition
-			winsCondition=200;
+	function iCanWin(){
+		 attack=$1;
+      if [ $winAttack -eq $attack ]
+      then
+         #win Attack Check condition for winning Block 
+         winsCondition=2;
          add=1;
          checker=1;
-		fi;
+      else
+         #But THis Win condition we are using for block also
+         #This is Block condition
+         winsCondition=200;
+         add=1;
+         checker=1;
+      fi;
 
-			if [ $pair1 -eq $winsCondition ]
-			then
-				if [ $((${gameStorage[1]} + $add )) -eq $checker ]
-				then
-					no=1;
-					echo $no;
-					
-				elif [ $((${gameStorage[2]} + $add )) -eq $checker ]
-				then
-					no=2;   
-               echo $no;
-					
-				elif [ $((${gameStorage[3]} + $add )) -eq $checker ]
-				then
-					no=3;
-					echo $no;
-				
-				fi;
+ 		declare -a forICanWin;
+	
+		forICanWin=([1]=1 [2]=2 [3]=3  [4]=1 [5]=4 [6]=7  [7]=1 [8]=5 [9]=9  [10]=3 [11]=6 [12]=9  [13]=7 [14]=8 [15]=9  [16]=3 [17]=5 [18]=7  [19]=2 [20]=5 [21]=8  [22]=4 [23]=5 [24]=6);
 		
-         elif [ $pair2 -eq $winsCondition ]
+		for (( locate=1;locate <=22; locate=$nextPair ))
+		do
+
+			element1=${forICanWin[ locate ]};
+			nextByOne=$(( $locate + 1 ));
+			nextByTwo=$(( $locate + 2 ));
+			element2=${forICanWin[ nextByOne ]};
+			element3=${forICanWin[ nextByTwo ]};
+
+   		pair=$(( ${gameStorage[element1]} + ${gameStorage[element2]} +  ${gameStorage[element3]}  ));
+
+			if [ $pair -eq $winsCondition ]
          then
-            if [ $((${gameStorage[1]} + $add )) -eq $checker ] 
+            if [ $((${gameStorage[element1]} + $add )) -eq $checker ] 
             then
-					no=1;
-               echo $no;
-               
-            elif [ $((${gameStorage[4]} + $add )) -eq $checker ]
+               echo $element1;
+				break;
+            elif [ $((${gameStorage[element2]} + $add )) -eq $checker ]
             then
-					no=4;
-               echo $no;
+               echo $element2;
                
-            elif [ $((${gameStorage[7]} + $add )) -eq $checker ]
+					break;
+            elif [ $((${gameStorage[element3]} + $add )) -eq $checker ]
             then
-					no=7;
-               echo $no;
-               
+               echo $element3;
+					break;
             fi;
-			
-			elif [ $pair3 -eq $winsCondition ]
-         then
-            if [ $((${gameStorage[1]} + $add )) -eq $checker ] 
-            then
-					no=1;
-               echo $no;
-               
-            elif [ $((${gameStorage[5]} + $add )) -eq $checker ]
-            then
-					no=5;
-               echo $no;
-               
-            elif [ $((${gameStorage[9]} + $add )) -eq $checker ]
-            then
-					no=9;
-               echo $no;
-               
-            fi;
-			elif [ $pair4 -eq $winsCondition ]
-         then
-            if [ $((${gameStorage[2]} + $add )) -eq $checker ] 
-            then
-					no=2;
-               echo $no;
-               
-            elif [ $((${gameStorage[5]} + $add )) -eq $checker ]
-            then
-					no=5;
-               echo $no;
-               
-            elif [ $((${gameStorage[8]} + $add )) -eq $checker ]
-            then
-					no=8;
-               echo $no;
-               
-            fi;
-			elif [ $pair5 -eq $winsCondition ]
-         then
-            if [ $((${gameStorage[4]} + $add )) -eq $checker ] 
-            then
-					no=4;
-               echo $no;
-               
-            elif [ $((${gameStorage[5]} + $add )) -eq $checker ]
-            then
-					no=5;
-               echo $no;
-               
-            elif [ $((${gameStorage[6]} + $add )) -eq $checker ]
-            then
-					no=6;
-               echo $no;
-               
-            fi;
-			elif [ $pair6 -eq $winsCondition ]
-         then
-            if [ $((${gameStorage[3]} + $add )) -eq $checker ] 
-            then
-					no=6;
-               echo $no;
-               
-            elif [ $((${gameStorage[5]} + $add )) -eq $checker ]
-            then
-					no=5;
-               echo $no;
-               
-            elif [ $((${gameStorage[7]} + $add )) -eq $checker ]
-            then
-					no=7;
-               echo $no;
-               
-            fi;
-			elif [ $pair7 -eq $winsCondition ]
-         then
-            if [ $((${gameStorage[3]} + $add )) -eq $checker ] 
-            then
-					no=3;
-               echo $no;
-               
-            elif [ $((${gameStorage[6]} + $add )) -eq $checker ]
-            then
-					no=6;
-               echo $no;
-               
-            elif [ $((${gameStorage[9]} + $add )) -eq $checker ]
-            then
-					no=9;
-               echo $no;
-               
-            fi;
-			elif [ $pair8 -eq $winsCondition ]
-         then
-            if [ $((${gameStorage[7]} + $add )) -eq $checker ] 
-            then
-					no=7;
-               echo $no;
-               
-            elif [ $((${gameStorage[8]} + $add )) -eq $checker ]
-            then
-					no=8;
-               echo $no;
-               
-            elif [ $((${gameStorage[9]} + $add )) -eq $checker ]
-            then
-					no=9;
-               echo $no;
-            fi;
-			fi;
+         fi;
+		nextPair=$(( $locate + 3 ));
+		done
+
 	}
 
 
@@ -458,7 +339,6 @@ declare -a symbolStorage;
 #This Is main
 	while :
 	do
-
 	#GAME initialize execute only onece to Assign Symbols And Toss
 	if [ $GAMEINIT -eq 1 ]
 	then
@@ -490,7 +370,7 @@ declare -a symbolStorage;
 
 		#calling to insert into array
      	insertInStorage $cell $PLAYERVALUE;
-		
+
       #Board changes here
       board;
 		checkWin $PLAYERPLAY;
@@ -515,7 +395,7 @@ declare -a symbolStorage;
 		printf "\n ";
 		echo "COMPUTER WON";
 		fi;
-		
+
 		#IF We Cannot Win Then We Are Blocking Opponents By this Condition
 		#blocking condition we not win so we switching 
 		tripletBlock=$(iCanWin $blockAttack);
@@ -539,3 +419,4 @@ declare -a symbolStorage;
 unset gameStorage;
 unset symbolStorage;
 ==============================================THE END===========================================================
+
