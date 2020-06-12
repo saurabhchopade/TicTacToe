@@ -2,7 +2,6 @@
 #!/bin/bash -x
 echo "Welcome to tic Tac Toe GAME";
 #CONSTANTS
-
 #This is for To check who PLAY FIRST  
 COMPUTERPLAY=0;
 PLAYERPLAY=1;
@@ -24,13 +23,13 @@ PLAYERPAIR=300;
 #We are calling ICANWIN function for winning move and the Blocking move
 winAttack=1
 blockAttack=2;
-#VARIABLES
 
+#VARIABLES
 tossResult=" ";
 computerSymbol=" ";
 playerSymbol=" ";
 #To Switch The players
-switchFlag=1;
+switchFlag=" ";
 
 #To store return value For Win block condition 
 tripletWin=0;
@@ -59,34 +58,19 @@ declare -a symbolStorage;
 		j=${symbolStorage[9]};
 
 		echo "-------------------------";
-
 		echo -ne "|       ";echo -ne "|       ";echo -ne "|       ";echo -ne "|       "; echo -e " ";
-
 		echo -ne "|   $a   ";echo -ne "|   $b   ";echo -ne "|   $c   ";echo -ne "|       "; echo -e " ";
-
 		echo -ne "|       ";echo -ne "|       ";echo -ne "|       ";echo -ne "|       "; echo -e " ";
-
 		echo "-------------------------";
-
 		echo -ne "|       ";echo -ne "|       ";echo -ne "|       ";echo -ne "|       "; echo -e " ";
-
 		echo -ne "|   $d   ";echo -ne "|   $e   ";echo -ne "|   $f   ";echo -ne "|       "; echo -e " ";
-
 		echo -ne "|       ";echo -ne "|       ";echo -ne "|       ";echo -ne "|       "; echo -e " ";
-
-
 		echo "-------------------------";
-
 		echo -ne "|       ";echo -ne "|       ";echo -ne "|       ";echo -ne "|       "; echo -e " ";
-
 		echo -ne "|   $h   ";echo -ne "|   $i   ";echo -ne "|   $j   ";echo -ne "|       "; echo -e " ";
-
 		echo -ne "|       ";echo -ne "|       ";echo -ne "|       ";echo -ne "|       "; echo -e " ";
-
 		echo "-------------------------";
-
 		echo -ne " ";
-
 	}
 #=================================THIS RUNS ONLY ONCE WHILE INITIALIZATION=================================
 #Toss for Who Play First
@@ -100,6 +84,7 @@ declare -a symbolStorage;
       do
          symbolStorage[(( index ))]="$dummySymbol";
 			gameStorage[(( index ))]="$blank";
+
       done
 
 		tossResult=$((RANDOM%2));
@@ -107,6 +92,7 @@ declare -a symbolStorage;
 		then
 			#Computer Randomly Choose the Symbol
 			echo "Computer Play First";
+			switchFlag=0;
 			symbol=$((RANDOM%2));
 
   	 		if [ $symbol -eq $COMPUTERPLAY ]
@@ -128,11 +114,12 @@ declare -a symbolStorage;
 				printf "\n";
    		fi;
 
-			else
+		else
 				#Player Choose The Symbol
 				#If player pressed Wrong Choice Then Player Automatically Get the Symbol --X--
 
 				echo "YOU Play First";
+				switchFlag=1;
 				printf "\n \n";
 				echo "To Choose Symbol Press Number";
 				echo "1) O";
@@ -169,27 +156,24 @@ declare -a symbolStorage;
 #SYMBOL STORAGE USING FOR AS PER USER CELL VALUE
  
 	function insertInStorage(){
-
-	cellv=$1;
-	value=$2;
-	#echo $cellv $value;
+		cellv=$1;
+		value=$2;
+		#echo $cellv $value;
 	
-	gameStorage[(( cellv ))]="$value";
+		gameStorage[(( cellv ))]="$value";
 
-	#Storing Symbol As per The Value
-	if [ $value -eq $PLAYERVALUE ]
-	then
-		#PLAYER VALUE MEANS ITS PLAYER 
-		symbolStorage[(( cellv ))]="$playerSymbol";
+		#Storing Symbol As per The Value
+		if [ $value -eq $PLAYERVALUE ]
+		then
+			#PLAYER VALUE MEANS ITS PLAYER 
+			symbolStorage[(( cellv ))]="$playerSymbol";
 
-	elif [ $value -eq $COMPUTERVALUE ]
-	then
-		#MEANS ITS COMPUTER TURN SO THAT WE STORING COMPUTER SYMBOL
-		symbolStorage[(( cellv ))]="$computerSymbol";
-	fi;
-
+		elif [ $value -eq $COMPUTERVALUE ]
+		then
+			#MEANS ITS COMPUTER TURN SO THAT WE STORING COMPUTER SYMBOL
+			symbolStorage[(( cellv ))]="$computerSymbol";
+		fi;
 	}
-
 #====================================HERE WE ARE CHECK WINNER===========================================
 	function checkWin() {
 		whichPlayer=$1
@@ -226,59 +210,30 @@ declare -a symbolStorage;
 			echo "-----------------------------";
 			echo "| WINNER WINNER CHIKEN DINNER |";
 			echo "------------------------------";
+			echo ${forICanWin[1]};
 			exit 1;
 		fi;
 	}
 
 #==================================================================================================
-#This Function for Corner conditions if the winning move blocking move not possible
+#This fun activate if  winning and blocking positions are not there
 	function computerPlaying(){
-			#These Are 4 corner conditions
-			if [ ${gameStorage[1]} -eq 0 ]
-			then
-				state=1;
-				echo $state;
-			elif [ ${gameStorage[3]} -eq 0 ]
-         then
-            state=3;
-            echo $state;
-			elif [ ${gameStorage[7]} -eq 0 ]
-         then
-            state=7;
-            echo $state;
-			elif [ ${gameStorage[9]} -eq 0 ]
-         then
-            state=9;
-            echo $state;
-			#This is middle condition
-			elif [ ${gameStorage[5]} -eq 0 ]
-         then
-            state=5;
-            echo $state;
-			#These Are side corner conditions
-			elif [ ${gameStorage[2]} -eq 0 ]
-         then
-            state=2;
-            echo $state;
-			elif [ ${gameStorage[8]} -eq 0 ]
-         then
-            state=8;
-            echo $state;
-			elif [ ${gameStorage[4]} -eq 0 ]
-         then
-            state=4;
-            echo $state;
-			elif [ ${gameStorage[6]} -eq 0 ]
-         then
-            state=6;
-            echo $state;
-			fi;
+			#4 corner,Centre,side Corners
+			automaticMove=( [1]=1 [2]=3 [3]=7  [4]=9 [5]=5 [6]=2  [7]=8 [8]=4 [9]=6 ); 
+			for ((move=1;move<10;move++))
+			do
+				movePlay=${automaticMove[move]};
+				if [ ${gameStorage[movePlay]} -eq 0 ]
+         	then
+            	echo $movePlay;
+				break;
+				fi;
+			done
 	}
 
 #==========================Winninng And Blocking is done by This Function============================
-
-#This Function Will Give winning and blocking positions to user by passing different arguments
-#like BlockAttack and Win Attack
+#This Function Will Give winning and blocking To  Computer  by passing different arguments
+#like BlockAttack and WinAttack
 
 	function iCanWin(){
 		 attack=$1;
@@ -286,57 +241,48 @@ declare -a symbolStorage;
       then
          #win Attack Check condition for winning Block 
          winsCondition=2;
-         add=1;
          checker=1;
       else
          #But THis Win condition we are using for block also
          #This is Block condition
          winsCondition=200;
-         add=1;
          checker=1;
       fi;
 
  		declare -a forICanWin;
-	
 		forICanWin=([1]=1 [2]=2 [3]=3  [4]=1 [5]=4 [6]=7  [7]=1 [8]=5 [9]=9  [10]=3 [11]=6 [12]=9  [13]=7 [14]=8 [15]=9  [16]=3 [17]=5 [18]=7  [19]=2 [20]=5 [21]=8  [22]=4 [23]=5 [24]=6);
-		
 		for (( locate=1;locate <=22; locate=$nextPair ))
 		do
-
-			element1=${forICanWin[ locate ]};
 			nextByOne=$(( $locate + 1 ));
-			nextByTwo=$(( $locate + 2 ));
+         nextByTwo=$(( $locate + 2 ));
+			element1=${forICanWin[ locate ]};
 			element2=${forICanWin[ nextByOne ]};
 			element3=${forICanWin[ nextByTwo ]};
-
    		pair=$(( ${gameStorage[element1]} + ${gameStorage[element2]} +  ${gameStorage[element3]}  ));
 
 			if [ $pair -eq $winsCondition ]
          then
-            if [ $((${gameStorage[element1]} + $add )) -eq $checker ] 
+            if [ $((${gameStorage[element1]} + $checker )) -eq $checker ] 
             then
                echo $element1;
-				break;
-            elif [ $((${gameStorage[element2]} + $add )) -eq $checker ]
-            then
-               echo $element2;
-               
 					break;
-            elif [ $((${gameStorage[element3]} + $add )) -eq $checker ]
+            elif [ $((${gameStorage[element2]} + $checker )) -eq $checker ]
+            then
+               echo $element2;        	       
+					break;
+            elif [ $((${gameStorage[element3]} + $checker )) -eq $checker ]
             then
                echo $element3;
 					break;
             fi;
          fi;
-		nextPair=$(( $locate + 3 ));
+			nextPair=$(( $locate + 3 ));
 		done
 
 	}
 
-
 #=======================================THIS IS MAIN===========================================================
 #Player Switching Done Here
-#This Is main
 	while :
 	do
 	#GAME initialize execute only onece to Assign Symbols And Toss
@@ -355,50 +301,48 @@ declare -a symbolStorage;
 		echo "     SYMBOL=" $playerSymbol;
 
 		printf "\n \n";
-
 		#SUGGESTION TO USER
 		#If Computer is winning then it will give  suggetstion
 		tripletWin=$(iCanWin $winAttack);
-      if [ $tripletWin > 0 ]
+     
+		if [ $tripletWin > 0 ]
       then
-      printf "\n ";
-      echo "SUGGESTION="$tripletWin;
+      	printf "\n ";
+      	echo "SUGGESTION="$tripletWin;
       fi;
 
 		#Cell Choice From User
 		read -p  "Enter VALID CELL=" cell;
-
 		#calling to insert into array
      	insertInStorage $cell $PLAYERVALUE;
-
       #Board changes here
       board;
 		checkWin $PLAYERPLAY;
       switchFlag=0;
 		printf "\n \n ";
-	else
+	elif [ $switchFlag -eq 0 ]
+	then
 		printf "\n ";
 		echo "    **************";
 		echo "     COMPUTER TURN";
 		echo "      SYMBOL=" $computerSymbol;
 		#computer Playing Give Cell Value
 		#ICANWIN give Output only when winning condition
-
-		tripletWin=$(iCanWin $winAttack);
+		tripletWin=$(iCanWin $winAttack );
 		#If this condition Execute means 100% Winner
 		if [ $tripletWin > 0 ]
 		then
-		cell1=$tripletWin;
-		insertInStorage $cell1 $COMPUTERVALUE;
-		board;
-		checkWin $COMPUTERPLAY;
-		printf "\n ";
-		echo "COMPUTER WON";
+			cell1=$tripletWin;
+			insertInStorage $cell1 $COMPUTERVALUE;
+			board;
+			checkWin $COMPUTERPLAY;
+			printf "\n ";
+			echo "COMPUTER WON";
 		fi;
 
 		#IF We Cannot Win Then We Are Blocking Opponents By this Condition
 		#blocking condition we not win so we switching 
-		tripletBlock=$(iCanWin $blockAttack);
+		tripletBlock=$(iCanWin $blockAttack );
 		if [ $tripletBlock > 0 ]
 		then
 			cell1=$tripletBlock;
