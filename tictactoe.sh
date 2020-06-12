@@ -1,25 +1,22 @@
 
 #!/bin/bash -x
 echo "Welcome to tic Tac Toe GAME";
+
 #CONSTANTS
 #This is for To check who PLAY FIRST  
 COMPUTERPLAY=0;
 PLAYERPLAY=1;
-
 #Board Symbols
 SYMBOL1="O";
 SYMBOL2="X";
-
 #100 means player and 1 means Computer
 PLAYERVALUE=100;
 COMPUTERVALUE=1;
 #gameinit flag is to initialize the game like who play play first /which player which symbol
 GAMEINIT=1;
-
 #To check pair Addition// if addition equal to this Pair means Winning Condition 
 COMPUTERPAIR=3;
 PLAYERPAIR=300;
-
 #We are calling ICANWIN function for winning move and the Blocking move
 winAttack=1
 blockAttack=2;
@@ -30,10 +27,10 @@ computerSymbol=" ";
 playerSymbol=" ";
 #To Switch The players
 switchFlag=" ";
-
 #To store return value For Win block condition 
 tripletWin=0;
 tripletBlock=0;
+
 #ARRAY
 #gameStorage To Actual Values
 #symbolStorage for To store symbols  By mapping Two players Values
@@ -41,7 +38,7 @@ declare -a gameStorage;
 declare -a symbolStorage;
 
 #=================================================BOARD DESIGN============================================
-#Board function display the Design with respective Symbols
+	#Board function display the Design with respective Symbols
 	function board() {
 		#Locic For Board Design 
 		#Assumed for 1-2-3
@@ -72,9 +69,10 @@ declare -a symbolStorage;
 		echo "-------------------------";
 		echo -ne " ";
 	}
+
 #=================================THIS RUNS ONLY ONCE WHILE INITIALIZATION=================================
-#Toss for Who Play First
-#This Logic Run Only Starting of The GAME
+	#Toss for Who Play First
+	#This Logic Run Only Starting of The GAME
 	function assignSymbol(){
 		k=0;
 		blank=$k;
@@ -84,7 +82,6 @@ declare -a symbolStorage;
       do
          symbolStorage[(( index ))]="$dummySymbol";
 			gameStorage[(( index ))]="$blank";
-
       done
 
 		tossResult=$((RANDOM%2));
@@ -115,45 +112,44 @@ declare -a symbolStorage;
    		fi;
 
 		else
-				#Player Choose The Symbol
-				#If player pressed Wrong Choice Then Player Automatically Get the Symbol --X--
+			#Player Choose The Symbol
+			#If player pressed Wrong Choice Then Player Automatically Get the Symbol --X--
 
-				echo "YOU Play First";
-				switchFlag=1;
-				printf "\n \n";
-				echo "To Choose Symbol Press Number";
-				echo "1) O";
-				echo "2) X";
-				printf "\n \n";
-				read -p "Enter=" choice;
+			echo "YOU Play First";
+			switchFlag=1;
+			printf "\n \n";
+			echo "To Choose Symbol Press Number";
+			echo "1) O";
+			echo "2) X";
+			printf "\n \n";
+			read -p "Enter=" choice;
 
-				if [ $choice -eq 1 ]
-      		then
-					printf "\n";
-					#IF WE ASSIGN SYMBOL TO PLAYER IT WILL NOT ASSIGNE SYMBOL TO COMPUTER 
-					#SO that we assigned computer Symbol
-        			playerSymbol=$SYMBOL1;
-					computerSymbol=$SYMBOL2;
-        			echo "YOUR SYMBOL IS="$playerSymbol;
-					printf "\n";
-      		else
-					printf "\n";
-					#IF WE ASSIGN SYMBOL TO PLAYER IT WILL NOT ASSIGNE SYMBOL TO COMPUTER
-					#SO that we assigned computer Symbol
-         		playerSymbol=$SYMBOL2;
-					computerSymbol=$SYMBOL1;
-					echo "YOUR  SYMBOL IS="$playerSymbol;
-					printf "\n";
-      		fi;
-			fi;
+			if [ $choice -eq 1 ]
+      	then
+				printf "\n";
+				#IF WE ASSIGN SYMBOL TO PLAYER IT WILL NOT ASSIGNE SYMBOL TO COMPUTER 
+				#SO that we assigned computer Symbol
+        		playerSymbol=$SYMBOL1;
+				computerSymbol=$SYMBOL2;
+        		echo "YOUR SYMBOL IS="$playerSymbol;
+				printf "\n";
+      	else
+				printf "\n";
+				#IF WE ASSIGN SYMBOL TO PLAYER IT WILL NOT ASSIGNE SYMBOL TO COMPUTER
+				#SO that we assigned computer Symbol
+         	playerSymbol=$SYMBOL2;
+				computerSymbol=$SYMBOL1;
+				echo "YOUR  SYMBOL IS="$playerSymbol;
+				printf "\n";
+      	fi;
+		fi;
 		#Calling Board Function  To enter Valid cells
       board;
 	}
 
-
 #===================THIS FUNCTION FOR INSERTING VALUE AND THE SYMBOL TO ARRAY=========================== 
-#VALUE ARRAY(GAMESTORAGE) WE USING FOR THE WINNING CONDITION AND FOR BLOCKING THE PLAYER USING THE VALUES
-#SYMBOL STORAGE USING FOR AS PER USER CELL VALUE
+	#VALUE ARRAY(GAMESTORAGE) WE USING FOR THE WINNING CONDITION AND FOR BLOCKING THE PLAYER USING THE VALUES
+	#SYMBOL STORAGE USING FOR AS PER USER CELL VALUE
  
 	function insertInStorage(){
 		cellv=$1;
@@ -174,61 +170,61 @@ declare -a symbolStorage;
 			symbolStorage[(( cellv ))]="$computerSymbol";
 		fi;
 	}
+
 #====================================HERE WE ARE CHECK WINNER===========================================
 	function checkWin() {
 		whichPlayer=$1
 		if [ $PLAYERPLAY -eq $whichPlayer ]
 		then
-		#PLAYERPAIR=300;
-		whoIs=$PLAYERPAIR;
+			#PLAYERPAIR=300;
+			whoIs=$PLAYERPAIR;
 		else
-		#$COMPUTERPAIR=3;
-		whoIs=$COMPUTERPAIR;
+			#$COMPUTERPAIR=3;
+			whoIs=$COMPUTERPAIR;
 		fi;
-		#GameStorage Contains These Values
-		#	PLAYERVALUE=100;
-		#	COMPUTERVALUE=1;
-		pair1=$(( ${gameStorage[1]} + ${gameStorage[2]} +  ${gameStorage[3]}  ));
-		pair2=$(( ${gameStorage[1]} + ${gameStorage[4]} +  ${gameStorage[7]}  ));
-		pair3=$(( ${gameStorage[1]} + ${gameStorage[5]} +  ${gameStorage[9]}  ));
-		pair4=$(( ${gameStorage[2]} + ${gameStorage[5]} +  ${gameStorage[8]}  ));
-		pair5=$(( ${gameStorage[4]} + ${gameStorage[5]} +  ${gameStorage[6]}  ));
-		pair6=$(( ${gameStorage[3]} + ${gameStorage[5]} +  ${gameStorage[7]}  ));
-		pair7=$(( ${gameStorage[3]} + ${gameStorage[6]} +  ${gameStorage[9]}  ));
-		pair8=$(( ${gameStorage[7]} + ${gameStorage[8]} +  ${gameStorage[9]}  ));
-
-		if [ $pair1 -eq  $whoIs ] || [ $pair2 -eq  $whoIs ] || [ $pair3 -eq  $whoIs ] || [ $pair4 -eq  $whoIs ] || [ $pair5 -eq  $whoIs ] || [ $pair6 -eq  $whoIs ] || [ $pair7 -eq  $whoIs ] || [ $pair8 -eq  $whoIs ] 
-		then
-			if [ $switchFlag -eq 1 ]
+ 		declare -a forICanWin;
+		forICanWin=([1]=1 [2]=2 [3]=3 [4]=1 [5]=4 [6]=7  [7]=1 [8]=5 [9]=9  [10]=3 [11]=6 [12]=9  [13]=7 [14]=8 [15]=9  [16]=3 [17]=5 [18]=7  [19]=2 [20]=5 [21]=8  [22]=4 [23]=5 [24]=6);
+		for (( locate=1;locate <=22; locate=$nextPair ))
+      do
+     		nextByOne=$(( $locate + 1 ));
+         nextByTwo=$(( $locate + 2 ));
+         element1=${forICanWin[ locate ]};
+         element2=${forICanWin[ nextByOne ]};
+         element3=${forICanWin[ nextByTwo ]};
+       	pair=$(( ${gameStorage[element1]} + ${gameStorage[element2]} +  ${gameStorage[element3]}  ));
+			if [ $pair -eq  $whoIs ] 
 			then
-			printf "\n \n";
-			echo "-----------YOU WON------------";
-			else
-			echo "---------COMPUTER WON---------";
+				if [ $switchFlag -eq 1 ]
+        		then
+         		printf "\n \n";
+         		echo "-----------YOU WON------------";
+         	else
+         		echo "---------COMPUTER WON---------";
+         	fi;
+         	printf "\n \n ";
+         	echo "-----------------------------";
+         	echo "| WINNER WINNER CHIKEN DINNER |";
+         	echo "------------------------------";
+         	exit 1;
 			fi;
-			printf "\n \n ";
-			echo "-----------------------------";
-			echo "| WINNER WINNER CHIKEN DINNER |";
-			echo "------------------------------";
-			echo ${forICanWin[1]};
-			exit 1;
-		fi;
+			nextPair=$(( $locate + 3 ));
+		done
 	}
 
 #==================================================================================================
 #This fun activate if  winning and blocking positions are not there
 	function computerPlaying(){
-			#4 corner,Centre,side Corners
-			automaticMove=( [1]=1 [2]=3 [3]=7  [4]=9 [5]=5 [6]=2  [7]=8 [8]=4 [9]=6 ); 
-			for ((move=1;move<10;move++))
-			do
-				movePlay=${automaticMove[move]};
-				if [ ${gameStorage[movePlay]} -eq 0 ]
-         	then
-            	echo $movePlay;
+		#4 corner,Centre,side Corners
+		automaticMove=( [1]=1 [2]=3 [3]=7  [4]=9 [5]=5 [6]=2  [7]=8 [8]=4 [9]=6 ); 
+		for ((move=1;move<10;move++))
+		do
+			movePlay=${automaticMove[move]};
+			if [ ${gameStorage[movePlay]} -eq 0 ]
+         then
+            echo $movePlay;
 				break;
-				fi;
-			done
+			fi;
+		done
 	}
 
 #==========================Winninng And Blocking is done by This Function============================
@@ -236,7 +232,7 @@ declare -a symbolStorage;
 #like BlockAttack and WinAttack
 
 	function iCanWin(){
-		 attack=$1;
+		attack=$1;
       if [ $winAttack -eq $attack ]
       then
          #win Attack Check condition for winning Block 
@@ -278,89 +274,97 @@ declare -a symbolStorage;
          fi;
 			nextPair=$(( $locate + 3 ));
 		done
+	}
 
+#============================Player Play From Here=======================================
+	function playerFunction(){
+		printf "\n ";
+      echo "    *********";
+      echo "     YOUR TURN";
+    	echo "     SYMBOL=" $playerSymbol;
+      printf "\n \n";
+      #SUGGESTION TO USER
+      #If Computer is winning then it will give  suggetstion
+      tripletWin=$(iCanWin $winAttack);
+
+      if [ $tripletWin > 0 ]
+      then
+      	printf "\n ";
+         echo "SUGGESTION="$tripletWin;
+     	fi;
+
+      #Cell Choice From User
+      read -p  "Enter VALID CELL=" cell;
+      #calling to insert into array
+      insertInStorage $cell $PLAYERVALUE;
+      #Board Reflects here
+      board;
+      checkWin $PLAYERPLAY;
+      switchFlag=0;
+      printf "\n \n ";
+	}
+
+#==============================Computer Performs Operatins From Here======================================
+	function computerFunction(){
+
+		printf "\n ";
+      echo "    **************";
+      echo "     COMPUTER TURN";
+      echo "      SYMBOL=" $computerSymbol;
+      #computer Playing Give Cell Value
+      #ICANWIN give Output only when winning condition
+      tripletWin=$(iCanWin $winAttack );
+      #If this condition Execute means 100% Winner
+      if [ $tripletWin > 0 ]
+      then
+      	cell1=$tripletWin;
+         insertInStorage $cell1 $COMPUTERVALUE;
+         board;
+         checkWin $COMPUTERPLAY;
+         printf "\n ";
+         echo "COMPUTER WON";
+    	fi;
+
+    	#IF We Cannot Win Then We Are Blocking Opponents By this Condition
+      #blocking condition we not win so we switching 
+      tripletBlock=$(iCanWin $blockAttack );
+      if [ $tripletBlock > 0 ]
+      then
+      	cell1=$tripletBlock;
+         insertInStorage $cell1 $COMPUTERVALUE;
+         board;
+         switchFlag=1;
+     	else
+      	#If Winning And Blocking not possible then we Play Randomly And by giving priorities
+        	cell1=$(computerPlaying);
+        	insertInStorage $cell1 $COMPUTERVALUE;
+        	board;
+       	checkWin $COMPUTERPLAY;
+       	switchFlag=1;
+    	fi;
 	}
 
 #=======================================THIS IS MAIN===========================================================
 #Player Switching Done Here
 	while :
 	do
-	#GAME initialize execute only onece to Assign Symbols And Toss
-	if [ $GAMEINIT -eq 1 ]
-	then
-		assignSymbol;
-		GAMEINIT=0;
-	fi;
-
-	#THIS LOGIC FOR SWITCHING PLAYERS
-	if [ $switchFlag -eq 1 ]
-	then
-		printf "\n ";
-		echo "    *********";
-		echo "     YOUR TURN";
-		echo "     SYMBOL=" $playerSymbol;
-
-		printf "\n \n";
-		#SUGGESTION TO USER
-		#If Computer is winning then it will give  suggetstion
-		tripletWin=$(iCanWin $winAttack);
-     
-		if [ $tripletWin > 0 ]
-      then
-      	printf "\n ";
-      	echo "SUGGESTION="$tripletWin;
-      fi;
-
-		#Cell Choice From User
-		read -p  "Enter VALID CELL=" cell;
-		#calling to insert into array
-     	insertInStorage $cell $PLAYERVALUE;
-      #Board changes here
-      board;
-		checkWin $PLAYERPLAY;
-      switchFlag=0;
-		printf "\n \n ";
-	elif [ $switchFlag -eq 0 ]
-	then
-		printf "\n ";
-		echo "    **************";
-		echo "     COMPUTER TURN";
-		echo "      SYMBOL=" $computerSymbol;
-		#computer Playing Give Cell Value
-		#ICANWIN give Output only when winning condition
-		tripletWin=$(iCanWin $winAttack );
-		#If this condition Execute means 100% Winner
-		if [ $tripletWin > 0 ]
+		#GAME init execute only once to Assign generate Symbols And Toss
+		if [ $GAMEINIT -eq 1 ]
 		then
-			cell1=$tripletWin;
-			insertInStorage $cell1 $COMPUTERVALUE;
-			board;
-			checkWin $COMPUTERPLAY;
-			printf "\n ";
-			echo "COMPUTER WON";
+			assignSymbol;
+			GAMEINIT=0;
 		fi;
 
-		#IF We Cannot Win Then We Are Blocking Opponents By this Condition
-		#blocking condition we not win so we switching 
-		tripletBlock=$(iCanWin $blockAttack );
-		if [ $tripletBlock > 0 ]
+		#THIS LOGIC FOR SWITCHING PLAYERS
+		if [ $switchFlag -eq 1 ]
 		then
-			cell1=$tripletBlock;
-			insertInStorage $cell1 $COMPUTERVALUE;
-      	board;
-			switchFlag=1;
-		else
-			#If Winning And Blocking not possible then we Play Randomly And by giving priorities
-      	cell1=$(computerPlaying);
-      	insertInStorage $cell1 $COMPUTERVALUE;
-      	board;
-      	checkWin $COMPUTERPLAY;
-      	switchFlag=1;
-			fi;
-	fi;
+			playerFunction;
+		elif [ $switchFlag -eq 0 ]
+		then
+			computerFunction;
+		fi;
 
 	done;
 unset gameStorage;
 unset symbolStorage;
-==============================================THE END===========================================================
-
+#========================================================THE END===========================================================
