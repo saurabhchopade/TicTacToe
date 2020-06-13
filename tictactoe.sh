@@ -30,7 +30,6 @@ switchFlag=" ";
 #To store return value For Win block condition 
 tripletWin=0;
 tripletBlock=0;
-
 #ARRAY
 #gameStorage To Actual Values
 #symbolStorage for To store symbols  By mapping Two players Values
@@ -163,11 +162,12 @@ declare -a symbolStorage;
 		then
 			#PLAYER VALUE MEANS ITS PLAYER 
 			symbolStorage[(( cellv ))]="$playerSymbol";
-
+			((tie++));
 		elif [ $value -eq $COMPUTERVALUE ]
 		then
 			#MEANS ITS COMPUTER TURN SO THAT WE STORING COMPUTER SYMBOL
 			symbolStorage[(( cellv ))]="$computerSymbol";
+			((tie++));
 		fi;
 	}
 
@@ -186,6 +186,7 @@ declare -a symbolStorage;
 		forICanWin=([1]=1 [2]=2 [3]=3 [4]=1 [5]=4 [6]=7  [7]=1 [8]=5 [9]=9  [10]=3 [11]=6 [12]=9  [13]=7 [14]=8 [15]=9  [16]=3 [17]=5 [18]=7  [19]=2 [20]=5 [21]=8  [22]=4 [23]=5 [24]=6);
 		for (( locate=1;locate <=22; locate=$nextPair ))
       do
+
      		nextByOne=$(( $locate + 1 ));
          nextByTwo=$(( $locate + 2 ));
          element1=${forICanWin[ locate ]};
@@ -198,13 +199,20 @@ declare -a symbolStorage;
         		then
          		printf "\n \n";
          		echo "-----------YOU WON------------";
+					printf "\n \n ";
+            	echo "-----------------------------";
+            	echo "|         CONGRATS            |";
+            	echo "------------------------------";
+
          	else
+					printf "\n \n";
          		echo "---------COMPUTER WON---------";
+					printf "\n \n ";
+            	echo "-----------------------------";
+            	echo "|    Better Luck Next Time    |";
+            	echo "------------------------------";
+
          	fi;
-         	printf "\n \n ";
-         	echo "-----------------------------";
-         	echo "| WINNER WINNER CHIKEN DINNER |";
-         	echo "------------------------------";
          	exit 1;
 			fi;
 			nextPair=$(( $locate + 3 ));
@@ -290,7 +298,6 @@ declare -a symbolStorage;
 			playerFunction;
 		fi;
 	}
-
 #============================Player Play From Here=======================================
 	function playerFunction(){
 		printf "\n ";
@@ -319,7 +326,15 @@ declare -a symbolStorage;
       switchFlag=0;
       printf "\n \n ";
 	}
-
+#=====================For Showing Only ==================================================================	
+	function loading(){
+		for (( load=1;load<=5;load++ ))
+		do
+			sleep 0.3;
+			printf ".";
+		done
+		printf "\n \n";
+	}
 #==============================Computer Performs Operatins From Here======================================
 	function computerFunction(){
 
@@ -335,6 +350,9 @@ declare -a symbolStorage;
       then
       	cell1=$tripletWin;
          insertInStorage $cell1 $COMPUTERVALUE;
+			printf "\n \n";
+			printf "Computer Thinking ";
+			loading;
          board;
          checkWin $COMPUTERPLAY;
          printf "\n ";
@@ -348,12 +366,18 @@ declare -a symbolStorage;
       then
       	cell1=$tripletBlock;
          insertInStorage $cell1 $COMPUTERVALUE;
+			printf "\n \n";
+			printf "Computer Thinking ";			
+			loading;
          board;
          switchFlag=1;
      	else
       	#If Winning And Blocking not possible then we Play Randomly And by giving priorities
         	cell1=$(computerPlaying);
         	insertInStorage $cell1 $COMPUTERVALUE;
+			printf "\n \n";
+			printf "Computer Thinking ";
+			loading;
         	board;
        	checkWin $COMPUTERPLAY;
        	switchFlag=1;
